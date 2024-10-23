@@ -1,16 +1,16 @@
 import socket
 
-from app.entities.message import DNSHeader, DNSQuestion, DNSAnswer
+from app.entities import DNSHeader, DNSQuestion, DNSAnswer
 
 def main():
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     udp_socket.bind(("127.0.0.1", 2053))
-    counter = 0
     domain_name = 'codecrafters.io'
+
     while True:
         try:
             buf, source = udp_socket.recvfrom(512)
-
+            print(buf, 'buf')
             header = DNSHeader()
             header.ID = 1234
             header.QDCOUNT = 1
@@ -24,7 +24,6 @@ def main():
 
             response = header.convert_to_bytes() + question.convert_to_bytes() + answer.convert_to_bytes()
 
-            counter += 1
             udp_socket.sendto(response, source)
         except Exception as e:
             print(f"Error receiving data: {e}")
