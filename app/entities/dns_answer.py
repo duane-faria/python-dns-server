@@ -12,6 +12,13 @@ class DNSAnswer(DNSPart):
     Length: int
     Data: str = '8.8.8.8'
 
+    def __init__(self, name):
+        self.Name = name
+        self.Type: int = 1
+        self.Class: int = 1
+        self.TTL = 60
+        self.Data = '8.8.8.8'
+
     def _convert_data_to_bytes(self) -> bytes:
         try:
             data_bytes = socket.inet_aton(self.Data)
